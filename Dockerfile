@@ -9,8 +9,8 @@ RUN mvn package -DskipTests
 FROM eclipse-temurin:21-jre-jammy
 WORKDIR /app
 # Copia o JAR do estágio de build
-COPY --from=builder target/apitcc-0.0.1-SNAPSHOT.jar app.jar
-# Expõe a porta que a aplicação vai usar (Render usa a variável PORT)
-EXPOSE 8080
-# Comando para iniciar a aplicação
-CMD ["java", "-jar", "app.jar"]
+COPY --from=builder /app/target/apitcc-0.0.1-SNAPSHOT.jar app.jar
+# Expõe a porta (Render usa PORT dinâmico)
+EXPOSE $PORT
+# Comando para iniciar a aplicação usando a porta do Render
+CMD java -Dserver.port=$PORT -jar app.jar
