@@ -52,6 +52,12 @@ public class EmpresaController {
      * Criar nova empresa
      * POST /api/empresas/criar
      */
+    @GetMapping("/email/{email}")
+    public ResponseEntity<EmpresaDTO> buscarPorEmail(@PathVariable String email) {
+        EmpresaDTO empresa = empresaService.buscarPorEmail(email);
+        return ResponseEntity.ok(empresa);
+    }
+
     @PostMapping("/criar")
     public ResponseEntity<Map<String, Object>> criarEmpresa(@RequestBody EmpresaDTO empresaDTO) {
         EmpresaDTO empresaCriada = empresaService.criarEmpresa(empresaDTO);
@@ -121,6 +127,7 @@ public class EmpresaController {
                 .orElseThrow(() -> new ResourceNotFoundException("Empresa nÃ£o encontrada com CNPJ: " + cnpj));
         return ResponseEntity.ok(ModelMapper.toEmpresaDTO(empresa));
     }
+
     /**
      * Endpoint para verificar se email jÃ¡ existe
      * GET /api/empresas/verificar-email/{email}
